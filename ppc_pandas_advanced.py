@@ -1,8 +1,18 @@
 ####################################################################
 # Python PEP Club - Pandas Training Beginners               ########
 # by Mat and TJ                                             ########
-# 2021-05-13                                                ########
+# 2021-06-24                                                ########
 ####################################################################
+
+'''
+    [Agenda]
+1. Spyder IDE
+2. Import Data with Excel
+3. Vlookup in Excel
+4. Merge Excel Data in Python
+5. Apply a marvelous Lambda Function
+'''
+
 
 # import modules
 import pandas as pd
@@ -10,11 +20,49 @@ import os
 
 # print working directory
 print(os.getcwd())
-# Connect to TEXT/CSV file
-df = pd.read_csv('pokemon.csv')
-# Connect to EXCEL file
-df = pd.read_excel('pokemon.xlsx', sheet_name='sheet1')
 
+# Connect to TEXT/CSV file
+# df = pd.read_csv('pokemon.csv')
+
+# Connect to EXCEL file
+df1 = pd.read_excel('pokemon.xlsx', sheet_name='sheet1')
+df2 = pd.read_excel('pokemon.xlsx', sheet_name='sheet2')
+
+# Merge on Evolution to see which pokemon it evolves to
+df3 = df1.merge(df2, left_on='name', right_on='name', how='left')
+
+
+    ######################## Challenge Question ########################
+    # Can you find the duplicate join?
+    # hint: df5 = df3['evolution'].dropna().sort_values()
+    ####################################################################
+
+# Apply lambda to see which pokemon would get KOd for 155 damage
+df3['KO'] = df3['hp'].apply(lambda x: x<155)
+
+# Apply with external Function
+def size(a):
+    if a > 300:
+        return('Really Big')
+    elif a > 150:
+        return('Big')
+    elif a > 50:
+        return('Average')
+    else:
+        return('Small')
+    
+df3['is_large'] = df3['weight kg'].apply(size)
+
+    ######################## Challenge Question ########################
+    # Can you group the height of the pokemon?
+    ####################################################################
+
+# Delete Data Frame
+del df2
+
+
+######## BEGGINER CODE BELOW ########
+'''
 # Display the Data [Columns, Head, Tail, Index, Types]
 print("Printing Head...")
 print(df.head(10))
@@ -31,6 +79,7 @@ print(df.describe)
 print("\nPrinting NUnique...")
 print(df.nunique)
 
+
     ######################## Challenge Question ########################
     # Try printing out the last 100 rows excluding the last 10
     
@@ -38,6 +87,7 @@ print(df.nunique)
     
     # Try printint out the dtypes for the last 2 columns
     ####################################################################
+
 
 # Index the Data [Column Indexing, Row Indexing, Index, Find Data by row, column]]
 print("\nIndexing a Column...")
@@ -85,3 +135,4 @@ print(df.fillna('N'))
 df.to_csv('pokemon_out.csv')
 # Output as EXCEL file
 df.to_excel('pokemon_out.xlsx', sheet_name="sheet1")
+'''
